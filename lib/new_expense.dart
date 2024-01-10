@@ -88,6 +88,7 @@ class _NewExpenseState extends State<NewExpense> {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: TextField(
@@ -105,13 +106,12 @@ class _NewExpenseState extends State<NewExpense> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        (selectedDate == null)
-                            ? 'No Date Selected'
-                            : formatter.format(selectedDate!),
-                      ),
-                      const SizedBox(
-                        width: 5,
+                      Expanded(
+                        child: Text(
+                          (selectedDate == null)
+                              ? 'No Date Selected'
+                              : formatter.format(selectedDate!),
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.calendar_month),

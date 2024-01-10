@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: Expenses(),
+    theme: ThemeData().copyWith(),
+    home: const Expenses(),
   ));
 }
