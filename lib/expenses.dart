@@ -11,25 +11,40 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredExpenses = [
-    Expense(
-      title: 'Title 1',
-      amount: 19.99,
-      date: DateTime.now(),
-      category: Category.food,
-    ),
-    Expense(
-      title: 'Title 2',
-      amount: 24.99,
-      date: DateTime.now(),
-      category: Category.leisure,
-    )
-  ];
+  final List<Expense> _registeredExpenses = [];
 
-  _openAddExpenseOverlay() {
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
+  removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text(
+        'Expense Deleted',
+      ),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+            });
+          }),
+    ));
+  }
+
+  void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) => NewExpense(_addExpense),
     );
   }
 
@@ -49,7 +64,7 @@ class _ExpensesState extends State<Expenses> {
         children: [
           const Text('The Chart'),
           Expanded(
-            child: ExpenseList(_registeredExpenses),
+            child: ExpenseList(_registeredExpenses, removeExpense),
           ),
         ],
       ),
